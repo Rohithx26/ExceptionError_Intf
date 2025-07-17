@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exception Interface</title>
+  </head>
+  <body
+    style="
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    "
+  >
+    <!-- Subtle background pattern -->
+    <div
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPgo8cmVjdCB3aWR0aD0iNiIgaGVpZ2h0PSI2IiBmaWxsPSIjZjVmN2ZhIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDZMNiAwWiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2U9IiNlNGU4ZWIiPjwvcGF0aD4KPC9zdmc+');
+        opacity: 0.6;
+        z-index: -1;
+      "
+    ></div>
+
+    <!-- Success Popup Modal -->
+    <div
+      id="successModal"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+      "
+    >
+      <div
+        style="
+          background: white;
+          border-radius: 15px;
+          padding: 40px;
+          text-align: center;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+          max-width: 400px;
+          width: 90%;
+          animation: modalSlideIn 0.3s ease-out;
+        "
+      >
+        <div
+          style="
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+          "
+        >
+          ✓
+        </div>
+        <h2
+          style="
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 400;
+          "
+        >
+          Exception Submitted Successfully!
+        </h2>
+        <p
+          style="
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.5;
+          "
+        >
+          Your exception report has been submitted and will be reviewed by our team.
+        </p>
+        <button
+          onclick="closeModal()"
+          style="
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+          "
+          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(39, 174, 96, 0.35)'"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(39, 174, 96, 0.25)'"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <div
+      style="
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        width: 95%;
+        max-width: 600px;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      "
+    >
+      <!-- Decorative accent element -->
+      <div
+        style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 6px;
+          height: 100%;
+          background: linear-gradient(to bottom, #e74c3c, #c0392b);
+        "
+      ></div>
+
+      <h1
+        style="
+          color: #2c3e50;
+          font-weight: 300;
+          margin-top: 0;
+          margin-bottom: 25px;
+          font-size: 28px;
+          display: flex;
+          align-items: center;
+          letter-spacing: -0.5px;
+        "
+      >
+        <span
+          style="
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+            box-shadow: 0 3px 6px rgba(231, 76, 60, 0.3);
+          "
+        >!</span>
+        Exception Interface
+      </h1>
+
+      <form id="exceptionForm" style="margin-top: 10px">
+        <!-- Application Dropdown -->
+        <div style="margin-bottom: 25px">
+          <label
+            for="application"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            <span style="color: #e74c3c; font-weight: bold">*</span> Application
+          </label>
+          <div style="position: relative">
+            <select
+              id="application"
+              name="application"
+              required
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                appearance: none;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            >
+              <option value="">Select an application</option>
+              <option value="web">Web Application</option>
+              <option value="mobile">Mobile App</option>
+              <option value="backend">Backend Service</option>
+              <option value="database">Database</option>
+            </select>
+            <div
+              style="
+                position: absolute;
+                right: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-top: 6px solid #95a5a6;
+                  display: inline-block;
+                "
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Name Dropdown -->
+        <div style="margin-bottom: 25px">
+          <label
+            for="codeName"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            <span style="color: #e74c3c; font-weight: bold">*</span> Code Name
+          </label>
+          <div style="position: relative">
+            <select
+              id="codeName"
+              name="codeName"
+              required
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                appearance: none;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            >
+              <option value="">Select a code name</option>
+              <optgroup label="Web Application">
+                <option value="web-404">404 - Not Found</option>
+                <option value="web-500">500 - Server Error</option>
+                <option value="web-403">403 - Forbidden</option>
+                <option value="web-timeout">Request Timeout</option>
+              </optgroup>
+              <optgroup label="Mobile App">
+                <option value="mobile-101">101 - Network Error</option>
+                <option value="mobile-102">102 - Timeout</option>
+                <option value="mobile-103">103 - Authentication Failed</option>
+                <option value="mobile-104">104 - Data Sync Error</option>
+              </optgroup>
+              <optgroup label="Backend Service">
+                <option value="backend-501">501 - Database Connection</option>
+                <option value="backend-502">502 - API Gateway Error</option>
+                <option value="backend-503">503 - Service Unavailable</option>
+                <option value="backend-504">504 - Processing Error</option>
+              </optgroup>
+              <optgroup label="Database">
+                <option value="db-601">601 - Connection Timeout</option>
+                <option value="db-602">602 - Query Error</option>
+                <option value="db-603">603 - Data Corruption</option>
+                <option value="db-604">604 - Backup Failed</option>
+              </optgroup>
+            </select>
+            <div
+              style="
+                position: absolute;
+                right: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-top: 6px solid #95a5a6;
+                  display: inline-block;
+                "
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Datetime Picker -->
+        <div
+          style="
+            margin-bottom: 25px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="datetime"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            <span style="color: #e74c3c; font-weight: bold">*</span> Date & Time
+          </label>
+          <input
+            type="datetime-local"
+            id="datetime"
+            name="datetime"
+            required
+            style="
+              width: 100%;
+              max-width: 300px;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              box-sizing: border-box;
+            "
+          />
+        </div>
+
+        <!-- Short Description -->
+        <div
+          style="
+            margin-bottom: 25px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="shortDescription"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            <span style="color: #e74c3c; font-weight: bold">*</span> Short Description
+          </label>
+          <input
+            type="text"
+            id="shortDescription"
+            name="shortDescription"
+            placeholder="Briefly describe the exception"
+            required
+            maxlength="100"
+            style="
+              width: 100%;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              box-sizing: border-box;
+            "
+          />
+        </div>
+
+        <!-- Description -->
+        <div
+          style="
+            margin-bottom: 30px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="description"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Detailed description of the exception..."
+            maxlength="1000"
+            style="
+              width: 100%;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              min-height: 100px;
+              resize: vertical;
+              box-sizing: border-box;
+            "
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div style="text-align: right">
+          <button
+            type="submit"
+            onclick="showModal(); return false;"
+            style="
+              background: linear-gradient(135deg, #e74c3c, #c0392b);
+              color: white;
+              border: none;
+              padding: 14px 28px;
+              border-radius: 6px;
+              font-size: 15px;
+              font-weight: 500;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25);
+              letter-spacing: 0.5px;
+              display: inline-flex;
+              align-items: center;
+            "
+          >
+            <span style="margin-right: 10px">Submit Exception</span>
+            <span
+              style="
+                display: inline-block;
+                width: 0;
+                height: 0;
+                border-left: 6px solid white;
+                border-top: 5px solid transparent;
+                border-bottom: 5px solid transparent;
+                transition: all 0.3s ease;
+              "
+            ></span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <style>
+      @keyframes modalSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Focus states using CSS */
+      input:focus, select:focus, textarea:focus {
+        border-color: #3498db !important;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.3) !important;
+      }
+
+      /* Hover effects using CSS */
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(231, 76, 60, 0.35) !important;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+        
+        .container {
+          padding: 20px;
+        }
+        
+        h1 {
+          font-size: 24px;
+        }
+      }
+    </style>
+
+    <script>
+      function showModal() {
+        document.getElementById('successModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        document.getElementById('successModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+        document.getElementById('exceptionForm').reset();
+      }
+
+      // Close modal when clicking outside
+      document.getElementById('successModal').onclick = function(e) {
+        if (e.target === this) closeModal();
+      }
+    </script>
+  </body>
+</html>

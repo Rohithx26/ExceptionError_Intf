@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exception Interface</title>
+    <style>
+      .input-error {
+        border-color: #e74c3c !important;
+      }
+      .error-message {
+        color: #c0392b;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none; /* Hidden by default */
+      }
+      .combobox-list {
+        display: none;
+        position: absolute;
+        border: 1px solid #e0e4e7;
+        border-top: none;
+        max-height: 200px;
+        overflow-y: auto;
+        width: 100%;
+        background-color: white;
+        z-index: 100;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+      }
+      .combobox-item {
+        padding: 10px 18px;
+        cursor: pointer;
+        font-size: 15px;
+        color: #34495e;
+      }
+      .combobox-item:hover {
+        background-color: #f0f0f0;
+      }
+      @keyframes modalSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: #3498db !important;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.3) !important;
+      }
+      button:hover {
+        transform: translateY(-2px);
+      }
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+        .container {
+          padding: 20px;
+        }
+        h1 {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body
+    style="
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    "
+  >
+    <div
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPgo8cmVjdCB3aWR0aD0iNiIgaGVpZ2h0PSI2IiBmaWxsPSIjZjVmN2ZhIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDZMNiAwWiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2U9IiNlNGU4ZWIiPjwvcGF0aD4KPC9zdmc+');
+        opacity: 0.6;
+        z-index: -1;
+      "
+    ></div>
+
+    <div
+      id="successModal"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+      "
+    >
+      <div
+        style="
+          background: white;
+          border-radius: 15px;
+          padding: 40px;
+          text-align: center;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+          max-width: 400px;
+          width: 90%;
+          animation: modalSlideIn 0.3s ease-out;
+        "
+      >
+        <div
+          style="
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+          "
+        >
+          ✓
+        </div>
+        <h2
+          style="
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 400;
+          "
+        >
+          Exception Submitted Successfully!
+        </h2>
+        <p
+          style="
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.5;
+          "
+        >
+          Your exception report has been submitted and will be reviewed.
+        </p>
+        <button
+          onclick="closeModal()"
+          style="
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+          "
+          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(39, 174, 96, 0.35)'"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(39, 174, 96, 0.25)'"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <div
+      style="
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        width: 95%;
+        max-width: 600px;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 6px;
+          height: 100%;
+          background: linear-gradient(to bottom, #e74c3c, #c0392b);
+        "
+      ></div>
+
+      <h1
+        style="
+          color: #2c3e50;
+          font-weight: 300;
+          margin-top: 0;
+          margin-bottom: 25px;
+          font-size: 28px;
+          display: flex;
+          align-items: center;
+          letter-spacing: -0.5px;
+        "
+      >
+        <span
+          style="
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+            box-shadow: 0 3px 6px rgba(231, 76, 60, 0.3);
+          "
+          >!</span
+        >
+        Exception Interface
+      </h1>
+
+      <form id="exceptionForm" action="" style="margin-top: 10px" novalidate>
+        <div style="margin-bottom: 25px">
+          <label
+            for="application"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            <span style="color: #e74c3c; font-weight: bold">*</span> Application
+          </label>
+          <div style="position: relative">
+            <select
+              id="application"
+              name="application"
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                appearance: none;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            >
+              <option value="">Select an application</option>
+              <option value="web">Web Application</option>
+              <option value="ActiveSpacesMDMIntegrations">
+                ActiveSpacesMDMIntegrations
+              </option>
+              <option value="ADSS">ADSS</option>
+              <option value="AgileVeevaIntegration">
+                AgileVeevaIntegration
+              </option>
+              <option value="ASIntegrations">ASIntegrations</option>
+              <option value="Beehive">Beehive</option>
+              <option value="BlackLineIntegration">BlackLineIntegration</option>
+              <option value="CLE">CLE</option>
+              <option value="ConcurIntegrations">ConcurIntegrations</option>
+              <option value="CostaRicaIntegrations">
+                CostaRicaIntegrations
+              </option>
+              <option value="DP_PRIntegrations">DP_PRIntegrations</option>
+              <option value="EBS_ACE">EBS_ACE</option>
+              <option value="EBSJDAAUIntegrations">EBSJDAAUIntegrations</option>
+              <option value="EBSJDABEIntegrations">EBSJDABEIntegrations</option>
+              <option value="EBSJDADPIntegrations">EBSJDADPIntegrations</option>
+              <option value="EBSJDAIntegrations">EBSJDAIntegrations</option>
+              <option value="EBSJDAMPIntegrations">EBSJDAMPIntegrations</option>
+              <option value="EBSJUMPIntegrations">EBSJUMPIntegrations</option>
+              <option value="EBSMTOIntegrations">EBSMTOIntegrations</option>
+              <option value="EDICOM">EDICOM</option>
+              <option value="FloQast">FloQast</option>
+              <option value="GPS2HUIntegrations">GPS2HUIntegrations</option>
+              <option value="GPS2Integrations">GPS2Integrations</option>
+              <option value="GPS2MPIntegrations">GPS2MPIntegrations</option>
+              <option value="GPS2PRIntegrations">GPS2PRIntegrations</option>
+              <option value="HCMIntegrations">HCMIntegrations</option>
+              <option value="ItalyInvoice">ItalyInvoice</option>
+              <option value="JDAAUIntegrations">JDAAUIntegrations</option>
+              <option value="JDAHUHVSS">JDAHUHVSS</option>
+              <option value="JDAKnappIntegrations">JDAKnappIntegrations</option>
+              <option value="JDAUSIntegrations">JDAUSIntegrations</option>
+              <option value="Kronos">Kronos</option>
+              <option value="MDM">MDM</option>
+              <option value="MetroRedIntegrations">MetroRedIntegrations</option>
+              <option value="MiSightIntegration">MiSightIntegration</option>
+              <option value="OMPIntegration">OMPIntegration</option>
+              <option value="ONEVISION">ONEVISION</option>
+              <option value="P36Integration">P36Integration</option>
+              <option value="PIBIntegration">PIBIntegration</option>
+              <option value="POSO">POSO</option>
+              <option value="ProjectMercury">ProjectMercury</option>
+              <option value="RPIntegrations">RPIntegrations</option>
+              <option value="Salesforce">Salesforce</option>
+              <option value="Sauflon">Sauflon</option>
+              <option value="SGVIntegration">SGVIntegration</option>
+              <option value="SunRiseIntegrations">SunRiseIntegrations</option>
+              <option value="TurkeyInvoice">TurkeyInvoice</option>
+              <option value="W2GI">W2GI</option>
+            </select>
+            <div
+              style="
+                position: absolute;
+                right: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-top: 6px solid #95a5a6;
+                  display: inline-block;
+                "
+              ></span>
+            </div>
+          </div>
+          <div class="error-message" id="applicationError">
+            This field is required.
+          </div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label
+            for="codeNameInput"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            <span style="color: #e74c3c; font-weight: bold">*</span> Code Name
+          </label>
+          <div style="position: relative">
+            <input
+              type="text"
+              id="codeNameInput"
+              name="codeName"
+              placeholder="Search or select an interface..."
+              autocomplete="off"
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            />
+            <div id="codeNameList" class="combobox-list"></div>
+          </div>
+          <div class="error-message" id="codeNameError">
+            This field is required.
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-bottom: 25px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="datetime"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            <span style="color: #e74c3c; font-weight: bold">*</span> Date & Time
+          </label>
+          <input
+            type="datetime-local"
+            id="datetime"
+            name="datetime"
+            style="
+              width: 100%;
+              max-width: 300px;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              box-sizing: border-box;
+            "
+          />
+          <div class="error-message" id="datetimeError">
+            This field is required.
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-bottom: 25px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="shortDescription"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            <span style="color: #e74c3c; font-weight: bold">*</span> Short
+            Description
+          </label>
+          <input
+            type="text"
+            id="shortDescription"
+            name="shortDescription"
+            placeholder="Briefly describe the exception"
+            maxlength="100"
+            style="
+              width: 100%;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              box-sizing: border-box;
+            "
+          />
+          <div class="error-message" id="shortDescriptionError">
+            This field is required.
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-bottom: 25px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="description"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Detailed description of the exception..."
+            maxlength="1000"
+            style="
+              width: 100%;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              min-height: 100px;
+              resize: vertical;
+              box-sizing: border-box;
+            "
+          ></textarea>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label
+            for="assigned"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            Assigned
+          </label>
+          <div style="position: relative">
+            <select
+              id="assigned"
+              name="assigned"
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                appearance: none;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            >
+              <option value="">Select assignee</option>
+              <option value="Akshaya Venkatesan">Akshaya Venkatesan</option>
+              <option value="Amsaveni Boominathan">Amsaveni Boominathan</option>
+              <option value="Aswini Manthakani Rammohan">
+                Aswini Manthakani Rammohan
+              </option>
+              <option value="Aslin Arul Albert">Aslin Arul Albert</option>
+              <option value="Deebha Prabhavathi">Deebha Prabhavathi</option>
+              <option value="Karthikeyan Velkumar">Karthikeyan Velkumar</option>
+              <option value="Monira Ibhrahim">Monira Ibhrahim</option>
+            </select>
+            <div
+              style="
+                position: absolute;
+                right: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-top: 6px solid #95a5a6;
+                  display: inline-block;
+                "
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-bottom: 25px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="count"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            Count
+          </label>
+          <input
+            type="number"
+            id="count"
+            name="count"
+            placeholder="Enter count"
+            min="0"
+            style="
+              width: 100%;
+              max-width: 200px;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              box-sizing: border-box;
+            "
+          />
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label
+            for="kedb"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            KEDB
+          </label>
+          <div style="position: relative">
+            <select
+              id="kedb"
+              name="kedb"
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                appearance: none;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            >
+              <option value="">KEDB</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="no-need">No need</option>
+            </select>
+            <div
+              style="
+                position: absolute;
+                right: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-top: 6px solid #95a5a6;
+                  display: inline-block;
+                "
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label
+            for="kedbReference"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            KEDB Reference
+          </label>
+          <div style="position: relative">
+            <select
+              id="kedbReference"
+              name="kedbReference"
+              onchange="toggleOthersTextbox(this)"
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                appearance: none;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            >
+              <option value="">KEDB reference</option>
+              <option value="referred">Referred</option>
+              <option value="not-referred">Not Referred</option>
+              <option value="others">Others</option>
+            </select>
+            <div
+              style="
+                position: absolute;
+                right: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-top: 6px solid #95a5a6;
+                  display: inline-block;
+                "
+              ></span>
+            </div>
+          </div>
+          <div id="othersTextbox" style="display: none; margin-top: 10px">
+            <input
+              type="text"
+              id="kedbReferenceOthers"
+              name="kedbReferenceOthers"
+              placeholder="Please specify..."
+              style="
+                width: 100%;
+                padding: 12px 14px;
+                border: 1px solid #e0e4e7;
+                border-radius: 4px;
+                background-color: white;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-sizing: border-box;
+              "
+            />
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-bottom: 30px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="comments"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            Comments
+          </label>
+          <textarea
+            id="comments"
+            name="comments"
+            placeholder="Optional comments..."
+            maxlength="500"
+            style="
+              width: 100%;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              min-height: 80px;
+              resize: vertical;
+              box-sizing: border-box;
+            "
+          ></textarea>
+        </div>
+
+        <div style="text-align: right">
+          <button
+            type="submit"
+            style="
+              background: linear-gradient(135deg, #e74c3c, #c0392b);
+              color: white;
+              border: none;
+              padding: 14px 28px;
+              border-radius: 6px;
+              font-size: 15px;
+              font-weight: 500;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25);
+              letter-spacing: 0.5px;
+              display: inline-flex;
+              align-items: center;
+            "
+            onmouseover="this.style.boxShadow='0 6px 16px rgba(231, 76, 60, 0.35)'"
+            onmouseout="this.style.boxShadow='0 4px 12px rgba(231, 76, 60, 0.25)'"
+          >
+            <span style="margin-right: 10px">Submit Exception</span>
+            <span
+              style="
+                display: inline-block;
+                width: 0;
+                height: 0;
+                border-left: 6px solid white;
+                border-top: 5px solid transparent;
+                border-bottom: 5px solid transparent;
+                transition: all 0.3s ease;
+              "
+            ></span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      // --- DATA FOR CODE NAME SEARCH ---
+      const codeNameOptions = [
+        "AS2MDMIntegration",
+        "AS2MDMUpdates",
+        "ASMDMIntegration",
+        "ASMDMUpdates",
+        "ASMDMUpdatesOld",
+        "ADSS_CustGroup",
+        "AgileVeevaIntegration",
+        "Beehive_CountResponse_ESBToJDA",
+        "Beehive_CountResponse_LMWCSToESB",
+        "Beehive_EndOfPreparationResponse_ESBToJDA",
+        "Beehive_EndOfPreparationResponse_LMWCSToESB",
+        "Beehive_InvAdjResponse_ESBToJDA",
+        "Beehive_InvAdjResponse_LMWCSToESB",
+        "Beehive_PickResponse_ESBToJDA",
+        "Beehive_PickResponse_LMWCSToESB",
+        "Beehive_PutAwayResponse_ESBToJDA",
+        "Beehive_PutAwayResponse_LMWCSToESB",
+        "Beehive_UPCCheck_LMWCSToJDA_RESTful",
+        "Beehive_CountRequest_ESBToLMWCS",
+        "Beehive_CountRequest_JDAToESB",
+        "Beehive_PickRequest_ESBToLMWCS",
+        "Beehive_PickRequest_JDAToESB",
+        "Beehive_PutAwayRequest_ESBToLMWCS",
+        "Beehive_PutAwayRequest_JDAToESB",
+        "Beehive_ToteDecoupleRequest_ESBToLMWCS",
+        "Beehive_ToteDecoupleRequest_JDAToESB",
+        "Beehive_ToteRoutingRequest_ESBToCSC",
+        "Beehive_ToteRoutingRequest_EZPickToESB",
+        "Beehive_ToteRoutingRequest_JDAToESB",
+        "BaanBlackLineIntegration",
+        "NewCLEExceptionManagement",
+        "NewCLELogging",
+        "NewRPExceptionManagement",
+        "NewRPLogging",
+        "ConcurBIIntegration",
+        "ConcurInvoice",
+        "ConcurMediSpend",
+        "ConcurSAE",
+        "ConcurSAEFileTransfer",
+        "ConcurSAEToEBSStaging",
+        "CostaRicaASNIntegration",
+        "CRLotIntegration",
+        "CRPOCreation",
+        "CRSLSOrderAck",
+        "CRSOCreation",
+        "ASNIntegration-PR",
+        "ASNReceiptConfirm-PR",
+        "SOCreation-PR",
+        "1C_ASNReceiptIntegration",
+        "1C_OrderCancellation",
+        "1C_PODateChange",
+        "1C_PutAwayIntegration",
+        "1CASNOutIntegration",
+        "1CPOCreation",
+        "Baan1CIntegration",
+        "1CASN3PLIntegration",
+        "1CASNFileUpload",
+        "1CSOIntegration",
+        "MDMC1Integration",
+        "BaanEBSIntegration",
+        "EBS3PLIntegration",
+        "EBSLogilityIntegration",
+        "MDMEBSIntegration",
+        "EBS3PL_RMAInBoundIntegration",
+        "EBS3PL_RMAMovementInterface",
+        "EBS3PL_RMAOutBoundInterface",
+        "EBSJDA_Acknowledgements_JDAAUToESB",
+        "EBSJDA_AddressIntegration_ESBToJDAAU",
+        "EBSJDA_ASNOutIntegration_ESBToJDAAU",
+        "EBSJDA_CustomerIntegration_ESBToJDAAU",
+        "EBSJDA_InventoryIntegration_JDAAUToESB",
+        "EBSJDA_ItemIntegration_ESBToJDAAU",
+        "EBSJDA_LOTOutIntegration_ESBToJDAAU",
+        "EBSJDA_LOTOutIntegration_ESBToJDAAUFile",
+        "EBSJDA_OrderCommitTransaction_JDAAUToESB",
+        "EBSJDA_OrdersIntegration_ESBToJDAAU",
+        "EBSJDA_QAInspectionIntegration_ESBToJDAAU",
+        "EBSJDA_RAIntegration_ESBToJDAAU",
+        "EBSJDA_ReceiptInventoryIntegration_JDAAUToESB",
+        "EBSJDA_ShiploadIntegration_JDAAUToESB",
+        "EBSJDA_SupplierIntegration_ESBToJDAAU",
+        "EBSJDA_Acknowledgements_JDABEToESB",
+        "EBSJDA_AddressIntegration_ESBToJDABE",
+        "EBSJDA_ASNOutIntegration_ESBToJDABE",
+        "JDAEDI_CustomDispatchNote_EDIToJDA",
+        "EBSJDA_CustomerIntegration_ESBToJDA",
+        "EBSJDA_InventoryIntegration_JDABEToESB",
+        "EBSJDA_ItemIntegration_ESBToJDABE",
+        "EBSJDA_BELotsOutbound",
+        "EBSJDA_LOTOutIntegration_ESBToJDABE",
+        "EBSJDA_LOTOutIntegration_ESBToJDABEFile",
+        "EBSJDA_OrderCommitTransaction_JDABEToESB",
+        "EBSJDA_OrdersIntegration_ESBToJDABE",
+        "EBSJDAOrderTracking",
+        "EBSJDA_QAInspectionIntegration_ESBToJDABE",
+        "EBSJDA_RAIntegration_ESBToJDABE",
+        "EBSJDA_ReceiptInventoryIntegration_JDABEToESB",
+        "EBSJDA_ShiploadIntegration_JDABEToESB",
+        "EBSJDA_SupplierIntegration_ESBToJDABE",
+        "EBSJDA_Acknowledgements_JDADPToESB",
+        "EBSJDA_ASNOutIntegration_ESBToJDADP",
+        "EBSJDA_INVRECFromJDADPToESB",
+        "EBSJDA_ORDRECFromJDADPToESB",
+        "EBSJDA_DPLotsOutbound",
+        "EBSJDA_LOTOutIntegration_ESBToJDADP",
+        "EBSJDA_LOTOutIntegration_ESBToJDADPFile",
+        "EBSJDA_OrderCommitTransaction_JDADPToESB",
+        "EBSJDA_OrdersIntegration_ESBToJDADP",
+        "EBSJDA_QAInspectionIntegration_ESBToJDADP",
+        "EBSJDA_RAIntegration_ESBToJDADP",
+        "EBSJDA_ReceiptInventoryIntegration_JDADPToESB",
+        "EBSJDA_ShiploadIntegration_JDADPToESB",
+        "EBSJDA_Acknowledgements_ESBToEBS",
+        "EBSJDA_Acknowledgements_JDAToESB",
+        "EBSJDA_AddressIntegration_EBSToESB",
+        "EBSJDA_AddressIntegration_ESBToJDA",
+        "EBSJDA_ASNOutIntegration_ESBToJDA",
+        "EBSJDAIntegration_COD",
+        "EBSJDA_CustomerIntegration_EBSToESB",
+        "EBSJDA_InventoryIntegration_ESBToEBS",
+        "EBSJDA_InventoryIntegration_JDAToESB",
+        "EBSJDA_ItemIntegration_EBSToESB",
+        "EBSJDA_ItemIntegration_ESBToJDA",
+        "EBSJDA_HULotsOutbound",
+        "EBSJDA_LOTOutIntegration_ESBToJDA",
+        "EBSJDA_LOTOutIntegration_ESBToJDAFile",
+        "EBSJDA_OrderCommitTransaction_ESBToEBS",
+        "EBSJDA_OrderCommitTransaction_JDAToESB",
+        "EBSJDA_OrdersIntegration_EBSToESB",
+        "EBSJDA_OrdersIntegration_ESBToJDA",
+        "EBSJDA_QAInspectionIntegration_EBSToESB",
+        "EBSJDA_QAInspectionIntegration_ESBToJDA",
+        "EBSJDA_RAIntegration_EBSToESB",
+        "EBSJDA_RAIntegration_ESBToJDA",
+        "EBSJDA_ReceiptInventoryIntegration_ESBToEBS",
+        "EBSJDA_ReceiptInventoryIntegration_JDAToESB",
+        "EBSJDA_ShiploadIntegration_ESBToEBS",
+        "EBSJDA_ShiploadIntegration_JDAToESB",
+        "EBSJDA_SupplierIntegration_EBSToESB",
+        "EBSJDA_SupplierIntegration_ESBToJDA",
+        "EBSJDA_DMS_RECFromESBToEBS",
+        "EBSJDA_DMS_RECFromJDAToESB",
+        "EBSJDA_ORDRECFromESBToEBS",
+        "InventoryRecFromESBToEBS",
+        "EBSJDA_Acknowledgements_JDAMPToESB",
+        "EBSJDA_ASNOutIntegration_ESBToJDAMP",
+        "EBSJDA_INVRECFromJDAMPToESB",
+        "EBSJDA_ORDRECFromJDAMPToESB",
+        "EBSJDA_LOTOutIntegration_ESBToJDAMP",
+        "EBSJDA_LOTOutIntegration_ESBToJDAMPFile",
+        "EBSJDA_OrderCommitTransaction_JDAMPToESB",
+        "EBSJDA_OrdersIntegration_ESBToJDAMP",
+        "EBSJDA_QAInspectionIntegration_ESBToJDAMP",
+        "EBSJDA_RAIntegration_ESBToJDAMP",
+        "EBSJDA_ReceiptInventoryIntegration_JDAMPToESB",
+        "EBSJDA_ShiploadIntegration_JDAMPToESB",
+        "EBS_Acknowledgement_NITTSUToESB",
+        "ASN_QUALITY_INSPECTION_FromNITTSU3PLToESB",
+        "ASNQUALITY_MOVEORDERTRANSFER_ESBToEBS",
+        "EBS_ASNOutIntegration_ESBToJP_NITTSU",
+        "EBS_PO_ASNIntegration_ESBToJP_NITTSU",
+        "CustomerIntegration_ESBTo3PLNITTSU",
+        "EDDIFileFromKWEoEBS",
+        "EBS_InventoryAdj_MaterialTrans_NITTSUToESB",
+        "InventorySnapshotFromNITTSU3PLToESB",
+        "EBS_ItemIntegration_ESBToJP_NITTSU",
+        "COCLotFileImportToEBS",
+        "EBS_LOTOutIntegration_ESBToJP_NITTSU",
+        "MoveOrderTransferOUT_ESBTo3PLNITTSU",
+        "MoveOrderTransferOUT_FromEBSTOESB",
+        "MoverOrderTransferIN_FromNITTSU3PLToESB",
+        "JP_SFTP_Integration",
+        "EBS_OrderIntegration_ESBTo3PLNITTSU",
+        "EBS_ReceiptIntegration_NITTSUToESB",
+        "RMA_ORDER_CREATIONFromNITTSU3PLToESB",
+        "RMA_ORDERCREATION_ESBToEBS",
+        "EBS_ShipmentConfirmation_NITTSUToESB",
+        "EBS_WIPOutboundIntegration_EBSToESB",
+        "EBS_WIPOutboundIntegration_ESBToJP_NITTSU",
+        "EBS_WIPCompletion_ESBToEBS",
+        "EBS_WIPCompletion_NITTSUToESB",
+        "EBSMTOIntegration_ASNLOT_MESToESB",
+        "EBSMTOIntegration_Orders_EBSToESB",
+        "EBSMTOIntegration_Orders_ESBToMES",
+        "EBSMTOIntegration_OrdersAck_ESBToEBS",
+        "EBSMTOIntegration_OrdersAck_MESToESB",
+        "EBSMTOIntegration_OrdersClose_EBSToESB",
+        "EBSMTOIntegration_OrdersClose_ESBToMES",
+        "EBSMTOIntegration_OrdersComplete_ESBToEBS",
+        "EBSMTOIntegration_OrdersComplete_MESToESB",
+        "EBSEDICOMIntegration_APInvoice",
+        "EBSEDICOMIntegration_E-Accounting",
+        "EBSEDICOMIntegration_Invoice",
+        "EBSEDICOMIntegration_Receipt",
+        "EBSEDICOMIntegration_DE_APInvoice",
+        "EDICOMDEIntegration_APInvoice_ESBToEBS",
+        "MYAPInvoiceIntegration_EDICOMToEBS",
+        "MYAPInvoiceIntegration_ESBToEDICOM",
+        "MYEDICOM_APInvoiceIntegration_EBSToESB",
+        "EBSMY_INVOICE_EDICOMToEBS",
+        "MYEDICOM-InvoiceIntegration_EBStoESB",
+        "MYEDICOM-InvoiceIntegration_ESBToEDICOM",
+        "HFMToFloQastIntergration_CVIRecons",
+        "HFMToFloQastIntergration_FluxAnalysis",
+        "HFMToFloQastIntergration_GenarateRecons",
+        "OracleToFloQastIntergration",
+        "GPS2_ASNPublicationIntegration_ESBToBAAN",
+        "GPS2_ASNPublicationIntegration_GPSToESB",
+        "GPS2_MI_CPOMIPacketIntegration_ESBToMI",
+        "GPS2_MI_CPOMIPacketInterface_GPSToESB",
+        "GPS2_CPOUpdateIntegration_ESBToBAAN",
+        "GPS2_CPOUpdateIntegration_GPSToESB",
+        "GPS2_MI_CPOUpdateMIPacketIntegration_MIToESB",
+        "GPS2_MI_CPOUpdateMIPacketInterface_ESBToGPS2",
+        "GPS2_LotHierarchyIntegration_GPSToESB",
+        "GPS2_LotMasterIntegration_GPSToESB",
+        "GPS2_MI_LotUpdateIntegration_MIToESB",
+        "GPS2_MI_LotUpdateInterface_ESBToGPS2",
+        "GPS2WH_MI_MIDataUpdateHeaderInterface_GPSToMI",
+        "GPS2WH_MI_MIDataUpdateSubLineInterface_GPSToMI",
+        "GPS2_PickUpdateIntegration_BAANToESB",
+        "GPS2_PickUpdateIntegration_ESBToGPS",
+        "GPS2US_UpdateFGCartonInterface_MItoGPS",
+        "GPSComponentItemValidation",
+        "GPSSilverStockItemValidation",
+        "GPS2_WIPCompleteIntegration_GPSToESB",
+        "GPS2_WIPCompletionIntegration_ESBToBAAN",
+        "GPS2_WIPMoveIntegration_ESBToBAAN",
+        "GPS2_WIPMoveIntegration_GPSToESB",
+        "GPS2_WorkOrderIntegration_BAANToESB",
+        "GPS2_WorkOrderIntegration_ESBToGPS",
+        "ActiveDirectoryIntegration",
+        "HCMIntegration_EmpDeltaFromESBtoAmex",
+        "HCMIntegration_EmpDeltaFromESBToBSwift",
+        "HCMIntegration_EmpFullLoadFromESBToBSwift",
+        "HCMIntegration_EmpFutureDeltaFromESBToeBlox",
+        "HCMIntegration_EmpDeltaFromESBToEBS",
+        "HCMIntegration_FullLoadFromESBToEBS",
+        "HCMIntegration_EmpFullloadFromESBtoEDW",
+        "ConcurIntegration_ESBToConcur",
+        "HCMIntegration_FullLoadFromESBToESPP",
+        "HCMIntegration_EmpDeltaFromESBtoFusion",
+        "HCMIntegration_EmpDeltaFromHCMToESB",
+        "HCMIntegration_EmpFullLoadFromHCMToESB",
+        "HCMIntegration_EmpFutureDeltaFromHCMHUToESB",
+        "HCMIntegration_EmpFutureDeltaFromHCMToESB",
+        "HCMIntegration_HCMToESB",
+        "HCMIntegration_EmpDeltaFromESBToHUADP",
+        "HCMIntegration_EmpDeltaFromESBtoLinkedIn",
+        "HCMIntegration_EmpFullLoadFromESBToLMS",
+        "HCMIntegration_EmpDeltaFromESBToPlanView",
+        "HCMIntegration_EmpFullLoadFromESBToSimpplr",
+        "HCMIntegration_EmpFullLoadFromESBToUnily",
+        "HCMIntegration_EmpDeltaFromESBToVisualTime",
+        "HCMIntegration_EmpDeltaFromESBtoWellness",
+        "EBS_ItalyInvoice",
+        "PayrollKronosIntegration",
+        "MDMBaanIntegration",
+        "MDMErrorReport",
+        "MDMNonBaanIntegration",
+        "Morpheus_ASNIntegration_EDIASNToMorpheus",
+        "Morpheus_ItemIntegration_ESBToMorpheus",
+        "Morpheus_ItemIntegration_MetroRedToESB",
+        "Morpheus_LotIntegration_ESBToMorpheus",
+        "Morpheus_MTOPOIntegration_ESBToMorpheus",
+        "Morpheus_MTOPOIntegration_MetroRedToESB",
+        "Morpheus_DeliveryOrderIntegration_ESBToMorpheus",
+        "Morpheus_DeliveryOrderIntegration_MetroRedToESB",
+        "Morpheus_ShipmentIntegration_ESBToMetroRed",
+        "Morpheus_ShipmentIntegration_MorpheusToESB",
+        "SpainASNIntegration_ESBToMorpheus",
+        "SpainASNReceivedIntegration_MorpheusToESB",
+        "SpainOnDockIntegration_MorpheusToESB",
+        "SpainPOClosedIntegration_ESBToMetroRed",
+        "SpainPOClosedIntegration_MorpheusToESB",
+        "SpainPOIntegration_ESBToMetroRed",
+        "SpainPutAwayIntegration_MorpheusToESB",
+        "SpainSOIntegration_MetroRedToESB",
+        "Morpheus_StockFileIntegration_ESBToCSR",
+        "Morpheus_StockFileIntegration_MorpheusToESB",
+        "MiSightIntegration",
+        "OMP_BUInterfaces_ProtimeToOMP",
+        "OMP_Clocking_ProtimeToOMP",
+        "OMP_ErrorNotification_ProtimeToOMP",
+        "OMP_LateArrivalsInterfaces_ProtimeToOMP",
+        "OMP_WorkersInterfaces_ProtimeToOMP",
+        "ASNATOIntegration",
+        "EBSASNIntegration",
+        "EBSJDA_ASNOutIntegration_EBSToESB",
+        "EBSJDA_ASNOutIntegration_ESBToGlobal",
+        "EBSJDA_ASNOutIntegration_ESBToJDAUS",
+        "EBSJDA_ASNOutIntegration_ESBToResupply",
+        "ScottsvilleMTOASN",
+        "ScottsvilleMTOASNA1",
+        "ScottsvilleMTOASNB3",
+        "ScottsvilleMTOASNUZ",
+        "BaanEBSPh1Integration",
+        "CMDMIntegration",
+        "CMRIntegration",
+        "CopyFilesfromEBStoHyperion",
+        "BankIntegration_EBSToESB",
+        "BankIntegration_ESBToSFDCStaging",
+        "EBS_SOCreation",
+        "EBSBlackLineIntegration",
+        "CustomerIntegration_EBSToESB",
+        "CustomerIntegration_ESBToSFDCStaging",
+        "EBSPOB2B",
+        "EBSPTBIntegration",
+        "EBSPTBIntegration_ESBToEBS",
+        "EBSPTBUK_Integration",
+        "EBSSOAckReconciliation",
+        "ExchangeRate",
+        "ExchangeRate_ESBToEBS",
+        "GloballotSequenceGeneration",
+        "EBS_CommHungaryInvoice",
+        "EBS_DistHungaryInvoice",
+        "EBS_HungaryInvoice",
+        "EBS_InvoiceStatusCheck",
+        "IOTFErrorReport",
+        "ChildOrg_Integration",
+        "EBSESBItemIntegration",
+        "ItemAcknowledgement",
+        "ItemESBToIMOChildOrg",
+        "ItemMasterOrg",
+        "ItemUPCRequest",
+        "LogilityEBSPOIntegration",
+        "EBSJDA_LOTHoldIntegration_EBSToESB",
+        "EBSJDA_LOTOutIntegration_EBSToESB",
+        "EBSJDA_LOTOutIntegration_ESBToGlobal",
+        "EBSLOTIntegration",
+        "EBSMAST3PLIntegration",
+        "EBSMAST3PLIntegrationSOSplit",
+        "EBSMAST_ASN3PLIntegration",
+        "EBSMAST_FITSET3PLIntegration",
+        "EBSMAST_INV3PLIntegration",
+        "EBSMAST_ITEM3PLIntegration",
+        "EBSMAST_RMA3PLIntegration",
+        "EBSInvoice3PLIntegration",
+        "PESIntegration",
+        "PODateChange",
+        "1Vision_WorkOrderAcknowledgement",
+        "ASNReceiptConfirm",
+        "EBS_SOAck",
+        "OnDock",
+        "POStatusChange",
+        "PutAway",
+        "P36Integration",
+        "PIBIntegration",
+        "ASNIntegration",
+        "GlobalLot_LotMasterIntegration_DailyReports",
+        "LotHierarchyIntegration_ESBToGlobalRepo",
+        "LotMasterIntegration_BNUSPOSOLotToGlobalRepo",
+        "LotMasterIntegration_ESBToGlobalPOSOLot",
+        "LotMasterIntegration_ESBToGlobalRepo",
+        "PESLotHierarchyIntegration_PESToESB",
+        "PESLotMasterIntegration_PESToESB",
+        "GlobalItemMapping",
+        "CRLogilityIntegration",
+        "PRLogilityIntegration",
+        "LOTIntegration",
+        "LOTIntegration_SC",
+        "GlobalPOSOASNToLotBI",
+        "GlobalPOSOLotToLotBI",
+        "POCreation",
+        "POSOOrdersToResupply",
+        "PutAwayEngine",
+        "SLSOrderAck",
+        "SOCreation",
+        "RFShipping_BaanToSV_ProductionOrder",
+        "RFShipping_BaanToSV_ProductionOrder_CANCELATIONS",
+        "RFShipping_SVToBaan_ASNIntegrations",
+        "RFShipping_SVToBaan_PO",
+        "RFShipping_SVToGlobal_LotIntegration",
+        "POSOWebServices",
+        "APS_Decoupling",
+        "APS_Initial",
+        "APS_OrderComplete",
+        "APS_Remove",
+        "APS_ScanRequest",
+        "AuditTransaction_ASRSToESB",
+        "AuditTransaction_ESBToJDA",
+        "CountResponse_ASRSToESB",
+        "CountResponse_ESBToJDA",
+        "InventoryAdjustment_ASRSToESB",
+        "InventoryAdjustment_ESBToJDA",
+        "LVPTOPickResponse_ASRSToESB",
+        "LVPTOPickResponse_ESBToJDA",
+        "MoveResponse_ASRSToESB",
+        "MoveResponse_ESBToJDA",
+        "PickResponse_ASRSToESB",
+        "PickResponse_ESBToJDA",
+        "PutAwayResponse_ASRSToESB",
+        "PutAwayResponse_ESBToJDA",
+        "ToteDetails_ASRSToESB",
+        "ToteDetails_ESBToJDA",
+        "CountRequest_BYToESB",
+        "HoldRequest_BYToESB",
+        "MasterData_BYToESB",
+        "MoveRequest_BYToESB",
+        "PickRequest_BYToESB",
+        "PutAwayRequest_BYToESB",
+        "ToteDecoupleRequest_BYToESB",
+        "CountRequest_ESBToASRS",
+        "CountRequest_JDAToESB",
+        "HoldRequest_ESBToASRS",
+        "HoldRequest_JDAToESB",
+        "MasterData_ESBToASRS",
+        "MasterData_JDAToESB",
+        "MoveRequest_ESBToASRS",
+        "MoveRequest_JDAToESB",
+        "PickRequest_ESBToASRS",
+        "PickRequest_JDAToESB",
+        "PutAwayRequest_ESBToASRS",
+        "PutAwayRequest_JDAToESB",
+        "ToteDecoupleRequest_ESBToASRS",
+        "ToteDecoupleRequest_JDAToESB",
+        "ToteLoaded_ESBToASRS",
+        "ToteLoaded_JDAToESB",
+        "ToteRequest_ESBToASRS",
+        "ToteRequest_JDAToESB",
+        "BaanUSAddresses",
+        "BaanUSCustomers",
+        "BOMInterface",
+        "LotsOutbound",
+        "Suppliers",
+        "AccountSalesForce",
+        "AccountsETL",
+        "SFDC_Bank",
+        "AccountSalesForce_CMRToSFDC",
+        "CMRXrefTableIntegration",
+        "SFDC_NonIntegratedMarketsAccountLoadToXref",
+        "SFDCIntegration_Pricelist",
+        "SFDC_TerritorytLoad",
+        "SFDCBuyingRelationShip",
+        "SFDCBuyingRelationShip_CMRToESB",
+        "SFDCErrors",
+        "ItalySauflonASNIntegartion",
+        "SauflonASNChannel3",
+        "SauflonASNHydroIntegrationCH1",
+        "SauflonASNHydroIntegrationCH2",
+        "SauflonASNIntegration",
+        "SauflonLotIntegration",
+        "SauflonPOCreation",
+        "SauflonSOACK",
+        "SauflonSOCreation",
+        "SauflonXRMTOLotIntegration",
+        "SCO-1640",
+        "EBS_SGVEDIIntegration",
+        "SGVIntegration_LOTASN",
+        "SunRiseAPIntegration",
+        "SunRiseConcurIntegration",
+        "SunRiseGLIntegration",
+        "APIntegration-CRtoESB",
+        "APIntegration-PRtoESB",
+        "GLIntegration-CRtoESB",
+        "GLIntegration-KronostoESB",
+        "GLIntegration-PeopleSofttoESB",
+        "GLIntegration-PRtoESB",
+        "TIBCO",
+        "TurkeyInvoiceIntegration_EBSToInposia",
+        "W2GIIntegration",
+        "JDAItemTranslation",
+        "EBSJDA_AddressIntegration_ESBToJDADP",
+        "EBSJDA_CustomerIntegration_ESBToJDADP",
+        "EBSJDA_InventoryIntegration_JDADPToESB",
+        "EBSJDA_ItemIntegration_ESBToJDADP",
+        "EBSJDA_SupplierIntegration_ESBToJDADP",
+        "EBSJDA_AddressIntegration_ESBToJDAMP",
+        "EBSJDA_CustomerIntegration_ESBToJDAMP",
+        "EBSJDA_InventoryIntegration_JDAMPToESB",
+        "EBSJDA_ItemIntegration_ESBToJDAMP",
+        "EBSJDA_SupplierIntegration_ESBToJDAMP",
+        "GPS2EBS_ASNPublicationIntegration_ESBToEBS",
+        "GPS2HU_ASNPublicationIntegration_GPSHUToESB",
+        "GPS2HU_MI_CPOMIPacketInterface_GPSToMI",
+        "GPS2EBS_CPOUpdateIntegration_ESBtoEBS",
+        "GPS2HU_CPOUpdateIntegration_GPSToESB",
+        "GPS2HU_MI_CPOUpdateMIPacketIntegration_MIToGPS2HU",
+        "GPS2HU_LotHierarchyIntegration_GPSToESB",
+        "GPS2HU_LotMasterIntegration_GPSToESB",
+        "GPS2HU_MI_LotUpdateIntegration_MIToGPS2HU",
+        "GPS2HU_MI_MIDataUpdateHeaderInterface_GPSHUToMI",
+        "GPS2HU_MI_MIDataUpdateSubLineInterface_GPSHUToMI",
+        "GPS2EBS_PickUpdateIntegration_EBSToESB",
+        "GPS2HU_PickUpdateIntegration_ESBToGPS",
+        "GPS2HU_MI_UpdateFGCartonInterface_MItoGPS",
+        "GPS2HUComponentItemValidation",
+        "GPS2HUSilverStockItemValidation",
+        "GPS2EBS_WIPCompletionIntegration_ESBToEBS",
+        "GPS2HU_WIPCompletionIntegration_GPSHUToESB",
+        "GPS2EBS_WIPMoveIntegration_ESBToEBS",
+        "GPS2HU_WIPMoveIntegration_GPSToESB",
+        "GPS2EBS_WorkOrderIntegration_EBSToESB",
+        "GPS2HU_WorkOrderIntegration_ESBToGPSHU",
+        "EBS_GPS2MP_ASNPublicationIntegration_GPSToESB",
+        "EBS_GPS2MP_MI_CPOMIPacketInterface_GPSToMI",
+        "EBS_GPS2MP_CPOUpdateIntegration_GPSToESB",
+        "EBS_GPS2MP_MI_CPOUpdateMIPacketIntegration_MIToGPS2",
+        "EBS_GPS2MP_LotHierarchyIntegration_GPSToESB",
+        "EBS_GPS2MP_LotMasterIntegration_GPSToESB",
+        "EBS_GPS2MP_MI_LotUpdateIntegration_MIToGPS",
+        "EBS_GPS2MP_MI_MIDataUpdateHeaderInterface_GPSToMI",
+        "EBS_GPS2MP_MI_MIDataUpdateSubLineInterface_GPS2MPToMI",
+        "EBS_GPS2MP_PickUpdateIntegration_ESBToGPS",
+        "EBS_GPS2MP_MI_UpdateFGCartonInterface_MItoGPS",
+        "EBS_GPS2MPComponentItemValidation",
+        "EBS_GPS2MPSilverStockItemValidation",
+        "EBS_GPS2MP_WIPCompletionIntegration_GPS2MPToESB",
+        "EBS_GPS2MP_WIPMoveIntegration_GPSToESB",
+        "EBS_GPS2MP_WorkOrderIntegration_ESBToGPS",
+        "GPS2PR_ASNPublicationIntegration_GPSToPR",
+        "GPS2PR_MI_CPOMIPacketInterface_GPSToMI",
+        "GPS2PR_CPOUpdateIntegration_GPSToPR",
+        "GPS2PR_MI_CPOUpdateMIPacketIntegration_MIToGPS2",
+        "GPS2PR_FGCartonInterface_MItoWCS",
+        "GPS2PR_FGCartonInterface_WCStoMI",
+        "GPS2PR_UpdateFGCartonInterface_MItoGPS",
+        "GPS2PRComponentItemValidation",
+        "GPS2PRSilverStockItemValidation",
+        "GPS2PR_LotMasterIntegration_GPSToPR",
+        "GPS2PR_MI_LotUpdateIntegration_MIToGPS2",
+        "GPS2PR_MI_MIDataUpdateHeaderInterface_GPSToMI",
+        "GPS2PR_MI_MIDataUpdateSubLineInterface_GPSToMI",
+        "GPS2PR_PickUpdateIntegration_PRToGPS",
+        "GPS2PR_WIPCompletionIntegration_GPSToPR",
+        "GPS2PR_WIPMoveIntegration_GPSToPR",
+        "GPS2PR_WorkOrderIntegration_PRToGPS",
+        "JDADematic_PickResponse_DematicToJDAAU",
+        "USR_Mass_ScanningFrom_DatalogicToESB",
+        "JDADematic_PickRequest_JDAAUToDematic",
+        "HVSS_HUToJDAIntegration",
+        "JDA_KNAPPIntegration_ESBToKNAPP",
+        "DeleteInventoryOrderRequest_JDAToESB",
+        "GoodsInOrderRequestFromJDAtoESB",
+        "InventoryOrderRequest_JDAToESB",
+        "PickOrderRequest_JDAToESB",
+        "SnapshotRequest_JDAToESB",
+        "UpdateProductsRequest_JDAToESB",
+        "JDAKnappIntegration_KnappToJDA",
+        "JDADP_Visidot_Integration",
+        "JDADP_Visidot_PS1_Integration",
+        "ASNConsolidation",
+        "Items",
+        "JDAASNTracking",
+        "RPAcknowledgements",
+        "InventoryAdjustment_BYUSToESB",
+        "InventoryTransfer_BYUSToESB",
+        "ReceiptInventory_BYUSToESB",
+        "ReleasePickBYUSToESB",
+        "ShipmentConfirm_BYUSToESB",
+        "PublishNonMDMItemsFromBaan",
+        "Administration",
+        "EXCMonitoring",
+        "PurgeCLE",
+        "ElEmpleoWS",
+        "HongKongIntegration",
+        "ShipRecAck",
+        "ASN2005To2012",
+        "ASNATO",
+        "ASNShipLoad",
+        "CampaignOrders",
+        "HVSS",
+        "InventoryAdjustment_ESBToBaan",
+        "InventoryReconciliation",
+        "InventoryTransfer_ESBToBaan",
+        "Lots",
+        "PicklistVisibility",
+        "ReceiptAuthorizations",
+        "ReceiptInventory_ESBToBaan",
+        "ReleasePick_ESBToBaan",
+        "RPWebServices",
+        "SalesOrders",
+        "ShipmentConfirm_ESBToBaan_CPO",
+        "ShipmentConfirm_ESBToBaan_SLS_WTR",
+        "TerritorySalesForce",
+        "TerritorySalesForce-1",
+        "TerritorySalesForce-2",
+      ];
+
+      // --- DOM ELEMENT REFERENCES ---
+      const form = document.getElementById("exceptionForm");
+      const applicationField = document.getElementById("application");
+      const codeNameInput = document.getElementById("codeNameInput");
+      const codeNameList = document.getElementById("codeNameList");
+      const datetimeField = document.getElementById("datetime");
+      const shortDescriptionField = document.getElementById("shortDescription");
+
+      // --- VALIDATION LOGIC ---
+      const validateField = (field, errorId) => {
+        const errorDiv = document.getElementById(errorId);
+        const parentWrapper = field.closest('div[style*="margin-bottom"]'); // Find the main parent div
+
+        // For text/date fields find the input, for select find the select
+        const inputElement =
+          field.tagName.toLowerCase() === "input"
+            ? field
+            : parentWrapper.querySelector("input, select");
+
+        if (!inputElement.value.trim()) {
+          inputElement.classList.add("input-error");
+          errorDiv.style.display = "block";
+          return false;
+        } else {
+          inputElement.classList.remove("input-error");
+          errorDiv.style.display = "none";
+          return true;
+        }
+      };
+
+      const validateForm = () => {
+        const isApplicationValid = validateField(
+          applicationField,
+          "applicationError"
+        );
+        const isCodeNameValid = validateField(codeNameInput, "codeNameError");
+        const isDatetimeValid = validateField(datetimeField, "datetimeError");
+        const isShortDescriptionValid = validateField(
+          shortDescriptionField,
+          "shortDescriptionError"
+        );
+
+        return (
+          isApplicationValid &&
+          isCodeNameValid &&
+          isDatetimeValid &&
+          isShortDescriptionValid
+        );
+      };
+
+      // --- ATTACH EVENT LISTENERS ---
+      form.addEventListener("submit", (event) => {
+        event.preventDefault(); // Always stop the default submission
+        if (validateForm()) {
+          console.log("Validation Passed. Submitting form.");
+          showModal();
+        } else {
+          console.log("Validation Failed.");
+        }
+      });
+
+      // --- ORIGINAL FUNCTIONS (with minor tweaks for cleanup) ---
+      function showModal() {
+        document.getElementById("successModal").style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        const form = document.getElementById("exceptionForm");
+        document.getElementById("successModal").style.display = "none";
+        document.body.style.overflow = "auto";
+        form.reset();
+
+        // Also reset the validation states
+        document
+          .querySelectorAll(".input-error")
+          .forEach((el) => el.classList.remove("input-error"));
+        document
+          .querySelectorAll(".error-message")
+          .forEach((el) => (el.style.display = "none"));
+        document.getElementById("othersTextbox").style.display = "none";
+
+        // Re-populate the date after reset
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById("datetime").value = now
+          .toISOString()
+          .slice(0, 16);
+      }
+
+      document.getElementById("successModal").onclick = function (e) {
+        if (e.target === this) closeModal();
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById("datetime").value = now
+          .toISOString()
+          .slice(0, 16);
+      });
+
+      function toggleOthersTextbox(selectElement) {
+        const othersTextbox = document.getElementById("othersTextbox");
+        const othersInput = document.getElementById("kedbReferenceOthers");
+        if (selectElement.value === "others") {
+          othersTextbox.style.display = "block";
+          othersInput.required = true;
+        } else {
+          othersTextbox.style.display = "none";
+          othersInput.required = false;
+          othersInput.value = "";
+        }
+      }
+
+      // --- NEW CODE NAME SEARCH/COMBOBOX LOGIC ---
+      function populateCodeNameList(options) {
+        codeNameList.innerHTML = "";
+        options.forEach((optionText) => {
+          const item = document.createElement("div");
+          item.classList.add("combobox-item");
+          item.textContent = optionText;
+          item.addEventListener("mousedown", (e) => {
+            e.preventDefault(); // Prevent input from losing focus
+            codeNameInput.value = optionText;
+            codeNameList.style.display = "none";
+            validateField(codeNameInput, "codeNameError");
+          });
+          codeNameList.appendChild(item);
+        });
+      }
+
+      codeNameInput.addEventListener("focus", () => {
+        codeNameList.style.display = "block";
+      });
+
+      codeNameInput.addEventListener("blur", () => {
+        // Delay hiding to allow click event on items
+        setTimeout(() => {
+          codeNameList.style.display = "none";
+          validateField(codeNameInput, "codeNameError"); // Validate on blur
+        }, 150);
+      });
+
+      codeNameInput.addEventListener("keyup", () => {
+        const filter = codeNameInput.value.toLowerCase();
+        const items = codeNameList.getElementsByClassName("combobox-item");
+        let hasVisibleItems = false;
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].textContent.toLowerCase().includes(filter)) {
+            items[i].style.display = "";
+            hasVisibleItems = true;
+          } else {
+            items[i].style.display = "none";
+          }
+        }
+        codeNameList.style.display = hasVisibleItems ? "block" : "none";
+      });
+
+      // Initial population of the list
+      populateCodeNameList(codeNameOptions);
+    </script>
+  </body>
+</html>
