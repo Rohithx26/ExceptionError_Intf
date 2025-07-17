@@ -1504,8 +1504,6 @@
           console.log("Validation Failed.");
         }
       });
-
-      // --- ORIGINAL FUNCTIONS (with minor tweaks for cleanup) ---
       function showModal() {
         document.getElementById("successModal").style.display = "flex";
         document.body.style.overflow = "hidden";
@@ -1517,7 +1515,6 @@
         document.body.style.overflow = "auto";
         form.reset();
 
-        // Also reset the validation states
         document
           .querySelectorAll(".input-error")
           .forEach((el) => el.classList.remove("input-error"));
@@ -1526,7 +1523,6 @@
           .forEach((el) => (el.style.display = "none"));
         document.getElementById("othersTextbox").style.display = "none";
 
-        // Re-populate the date after reset
         const now = new Date();
         now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
         document.getElementById("datetime").value = now
@@ -1581,7 +1577,6 @@
       });
 
       codeNameInput.addEventListener("blur", () => {
-        // Delay hiding to allow click event on items
         setTimeout(() => {
           codeNameList.style.display = "none";
           validateField(codeNameInput, "codeNameError"); // Validate on blur
@@ -1603,7 +1598,6 @@
         codeNameList.style.display = hasVisibleItems ? "block" : "none";
       });
 
-      // Initial population of the list
       populateCodeNameList(codeNameOptions);
     </script>
   </body>
