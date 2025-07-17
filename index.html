@@ -827,6 +827,7 @@
         <div style="text-align: right">
           <button
             type="submit"
+            onclick="submit"
             style="
               background: linear-gradient(135deg, #e74c3c, #c0392b);
               color: white;
@@ -1573,7 +1574,7 @@
       }
 
       codeNameInput.addEventListener("focus", () => {
-        codeNameList.style.display = "block";
+          codeNameList.style.display = "block";
       });
 
       codeNameInput.addEventListener("blur", () => {
