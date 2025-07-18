@@ -4,6 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Exception Interface</title>
+    <style>
+      .input-error {
+        border-color: #e74c3c !important;
+      }
+      .error-message {
+        color: #c0392b;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none; /* Hidden by default */
+      }
+      .combobox-list {
+        display: none;
+        position: absolute;
+        border: 1px solid #e0e4e7;
+        border-top: none;
+        max-height: 200px;
+        overflow-y: auto;
+        width: 100%;
+        background-color: white;
+        z-index: 100;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+      }
+      .combobox-item {
+        padding: 10px 18px;
+        cursor: pointer;
+        font-size: 15px;
+        color: #34495e;
+      }
+      .combobox-item:hover {
+        background-color: #f0f0f0;
+      }
+      @keyframes modalSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: #3498db !important;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.3) !important;
+      }
+      button:hover {
+        transform: translateY(-2px);
+      }
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+        .container {
+          padding: 20px;
+        }
+        h1 {
+          font-size: 24px;
+        }
+      }
+    </style>
   </head>
   <body
     style="
@@ -17,7 +80,6 @@
       min-height: 100vh;
     "
   >
-    <!-- Subtle background pattern -->
     <div
       style="
         position: fixed;
@@ -31,7 +93,6 @@
       "
     ></div>
 
-    <!-- Success Popup Modal -->
     <div
       id="successModal"
       style="
@@ -96,7 +157,7 @@
             line-height: 1.5;
           "
         >
-          Your exception report has been submitted and will be reviewed by our team.
+          Your exception report has been submitted and will be reviewed.
         </p>
         <button
           onclick="closeModal()"
@@ -132,7 +193,6 @@
         overflow: hidden;
       "
     >
-      <!-- Decorative accent element -->
       <div
         style="
           position: absolute;
@@ -170,12 +230,17 @@
             font-size: 20px;
             box-shadow: 0 3px 6px rgba(231, 76, 60, 0.3);
           "
-        >!</span>
+          >!</span
+        >
         Exception Interface
       </h1>
 
-      <form id="exceptionForm" style="margin-top: 10px">
-        <!-- Application Dropdown -->
+      <form
+        id="exceptionForm"
+        action="http//:localhost:8035/submit"
+        style="margin-top: 10px"
+        novalidate
+      >
         <div style="margin-bottom: 25px">
           <label
             for="application"
@@ -194,7 +259,6 @@
             <select
               id="application"
               name="application"
-              required
               style="
                 width: 100%;
                 padding: 14px 18px;
@@ -212,9 +276,59 @@
             >
               <option value="">Select an application</option>
               <option value="web">Web Application</option>
-              <option value="mobile">Mobile App</option>
-              <option value="backend">Backend Service</option>
-              <option value="database">Database</option>
+              <option value="ActiveSpacesMDMIntegrations">
+                ActiveSpacesMDMIntegrations
+              </option>
+              <option value="ADSS">ADSS</option>
+              <option value="AgileVeevaIntegration">
+                AgileVeevaIntegration
+              </option>
+              <option value="ASIntegrations">ASIntegrations</option>
+              <option value="Beehive">Beehive</option>
+              <option value="BlackLineIntegration">BlackLineIntegration</option>
+              <option value="CLE">CLE</option>
+              <option value="ConcurIntegrations">ConcurIntegrations</option>
+              <option value="CostaRicaIntegrations">
+                CostaRicaIntegrations
+              </option>
+              <option value="DP_PRIntegrations">DP_PRIntegrations</option>
+              <option value="EBS_ACE">EBS_ACE</option>
+              <option value="EBSJDAAUIntegrations">EBSJDAAUIntegrations</option>
+              <option value="EBSJDABEIntegrations">EBSJDABEIntegrations</option>
+              <option value="EBSJDADPIntegrations">EBSJDADPIntegrations</option>
+              <option value="EBSJDAIntegrations">EBSJDAIntegrations</option>
+              <option value="EBSJDAMPIntegrations">EBSJDAMPIntegrations</option>
+              <option value="EBSJUMPIntegrations">EBSJUMPIntegrations</option>
+              <option value="EBSMTOIntegrations">EBSMTOIntegrations</option>
+              <option value="EDICOM">EDICOM</option>
+              <option value="FloQast">FloQast</option>
+              <option value="GPS2HUIntegrations">GPS2HUIntegrations</option>
+              <option value="GPS2Integrations">GPS2Integrations</option>
+              <option value="GPS2MPIntegrations">GPS2MPIntegrations</option>
+              <option value="GPS2PRIntegrations">GPS2PRIntegrations</option>
+              <option value="HCMIntegrations">HCMIntegrations</option>
+              <option value="ItalyInvoice">ItalyInvoice</option>
+              <option value="JDAAUIntegrations">JDAAUIntegrations</option>
+              <option value="JDAHUHVSS">JDAHUHVSS</option>
+              <option value="JDAKnappIntegrations">JDAKnappIntegrations</option>
+              <option value="JDAUSIntegrations">JDAUSIntegrations</option>
+              <option value="Kronos">Kronos</option>
+              <option value="MDM">MDM</option>
+              <option value="MetroRedIntegrations">MetroRedIntegrations</option>
+              <option value="MiSightIntegration">MiSightIntegration</option>
+              <option value="OMPIntegration">OMPIntegration</option>
+              <option value="ONEVISION">ONEVISION</option>
+              <option value="P36Integration">P36Integration</option>
+              <option value="PIBIntegration">PIBIntegration</option>
+              <option value="POSO">POSO</option>
+              <option value="ProjectMercury">ProjectMercury</option>
+              <option value="RPIntegrations">RPIntegrations</option>
+              <option value="Salesforce">Salesforce</option>
+              <option value="Sauflon">Sauflon</option>
+              <option value="SGVIntegration">SGVIntegration</option>
+              <option value="SunRiseIntegrations">SunRiseIntegrations</option>
+              <option value="TurkeyInvoice">TurkeyInvoice</option>
+              <option value="W2GI">W2GI</option>
             </select>
             <div
               style="
@@ -235,12 +349,14 @@
               ></span>
             </div>
           </div>
+          <div class="error-message" id="applicationError">
+            This field is required.
+          </div>
         </div>
 
-        <!-- Code Name Dropdown -->
         <div style="margin-bottom: 25px">
           <label
-            for="codeName"
+            for="codeNameInput"
             style="
               display: block;
               margin-bottom: 10px;
@@ -253,16 +369,17 @@
             <span style="color: #e74c3c; font-weight: bold">*</span> Code Name
           </label>
           <div style="position: relative">
-            <select
-              id="codeName"
+            <input
+              type="text"
+              id="codeNameInput"
               name="codeName"
-              required
+              placeholder="Search or select an interface..."
+              autocomplete="off"
               style="
                 width: 100%;
                 padding: 14px 18px;
                 border: 1px solid #e0e4e7;
                 border-radius: 6px;
-                appearance: none;
                 background-color: #f8fafb;
                 font-size: 15px;
                 color: #34495e;
@@ -271,55 +388,14 @@
                 box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
                 box-sizing: border-box;
               "
-            >
-              <option value="">Select a code name</option>
-              <optgroup label="Web Application">
-                <option value="web-404">404 - Not Found</option>
-                <option value="web-500">500 - Server Error</option>
-                <option value="web-403">403 - Forbidden</option>
-                <option value="web-timeout">Request Timeout</option>
-              </optgroup>
-              <optgroup label="Mobile App">
-                <option value="mobile-101">101 - Network Error</option>
-                <option value="mobile-102">102 - Timeout</option>
-                <option value="mobile-103">103 - Authentication Failed</option>
-                <option value="mobile-104">104 - Data Sync Error</option>
-              </optgroup>
-              <optgroup label="Backend Service">
-                <option value="backend-501">501 - Database Connection</option>
-                <option value="backend-502">502 - API Gateway Error</option>
-                <option value="backend-503">503 - Service Unavailable</option>
-                <option value="backend-504">504 - Processing Error</option>
-              </optgroup>
-              <optgroup label="Database">
-                <option value="db-601">601 - Connection Timeout</option>
-                <option value="db-602">602 - Query Error</option>
-                <option value="db-603">603 - Data Corruption</option>
-                <option value="db-604">604 - Backup Failed</option>
-              </optgroup>
-            </select>
-            <div
-              style="
-                position: absolute;
-                right: 18px;
-                top: 50%;
-                transform: translateY(-50%);
-                pointer-events: none;
-              "
-            >
-              <span
-                style="
-                  border-left: 6px solid transparent;
-                  border-right: 6px solid transparent;
-                  border-top: 6px solid #95a5a6;
-                  display: inline-block;
-                "
-              ></span>
-            </div>
+            />
+            <div id="codeNameList" class="combobox-list"></div>
+          </div>
+          <div class="error-message" id="codeNameError">
+            This field is required.
           </div>
         </div>
 
-        <!-- Datetime Picker -->
         <div
           style="
             margin-bottom: 25px;
@@ -347,7 +423,6 @@
             type="datetime-local"
             id="datetime"
             name="datetime"
-            required
             style="
               width: 100%;
               max-width: 300px;
@@ -362,9 +437,11 @@
               box-sizing: border-box;
             "
           />
+          <div class="error-message" id="datetimeError">
+            This field is required.
+          </div>
         </div>
 
-        <!-- Short Description -->
         <div
           style="
             margin-bottom: 25px;
@@ -386,14 +463,14 @@
               letter-spacing: 0.3px;
             "
           >
-            <span style="color: #e74c3c; font-weight: bold">*</span> Short Description
+            <span style="color: #e74c3c; font-weight: bold">*</span> Short
+            Description
           </label>
           <input
             type="text"
             id="shortDescription"
             name="shortDescription"
             placeholder="Briefly describe the exception"
-            required
             maxlength="100"
             style="
               width: 100%;
@@ -408,12 +485,14 @@
               box-sizing: border-box;
             "
           />
+          <div class="error-message" id="shortDescriptionError">
+            This field is required.
+          </div>
         </div>
 
-        <!-- Description -->
         <div
           style="
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border: 1px solid #e0e4e7;
             border-radius: 6px;
             padding: 18px;
@@ -456,11 +535,303 @@
           ></textarea>
         </div>
 
-        <!-- Submit Button -->
+        <div style="margin-bottom: 25px">
+          <label
+            for="assigned"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            Assigned
+          </label>
+          <div style="position: relative">
+            <select
+              id="assigned"
+              name="assigned"
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                appearance: none;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            >
+              <option value="">Select assignee</option>
+              <option value="Akshaya Venkatesan">Akshaya Venkatesan</option>
+              <option value="Amsaveni Boominathan">Amsaveni Boominathan</option>
+              <option value="Aswini Manthakani Rammohan">
+                Aswini Manthakani Rammohan
+              </option>
+              <option value="Aslin Arul Albert">Aslin Arul Albert</option>
+              <option value="Deebha Prabhavathi">Deebha Prabhavathi</option>
+              <option value="Karthikeyan Velkumar">Karthikeyan Velkumar</option>
+              <option value="Monira Ibhrahim">Monira Ibhrahim</option>
+            </select>
+            <div
+              style="
+                position: absolute;
+                right: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-top: 6px solid #95a5a6;
+                  display: inline-block;
+                "
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-bottom: 25px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="count"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            Count
+          </label>
+          <input
+            type="number"
+            id="count"
+            name="count"
+            placeholder="Enter count"
+            min="0"
+            style="
+              width: 100%;
+              max-width: 200px;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              box-sizing: border-box;
+            "
+          />
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label
+            for="kedb"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            KEDB
+          </label>
+          <div style="position: relative">
+            <select
+              id="kedb"
+              name="kedb"
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                appearance: none;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            >
+              <option value="">KEDB</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="no-need">No need</option>
+            </select>
+            <div
+              style="
+                position: absolute;
+                right: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-top: 6px solid #95a5a6;
+                  display: inline-block;
+                "
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label
+            for="kedbReference"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            KEDB Reference
+          </label>
+          <div style="position: relative">
+            <select
+              id="kedbReference"
+              name="kedbReference"
+              onchange="toggleOthersTextbox(this)"
+              style="
+                width: 100%;
+                padding: 14px 18px;
+                border: 1px solid #e0e4e7;
+                border-radius: 6px;
+                appearance: none;
+                background-color: #f8fafb;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+              "
+            >
+              <option value="">KEDB reference</option>
+              <option value="referred">Referred</option>
+              <option value="not-referred">Not Referred</option>
+              <option value="others">Others</option>
+            </select>
+            <div
+              style="
+                position: absolute;
+                right: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-top: 6px solid #95a5a6;
+                  display: inline-block;
+                "
+              ></span>
+            </div>
+          </div>
+          <div id="othersTextbox" style="display: none; margin-top: 10px">
+            <input
+              type="text"
+              id="kedbReferenceOthers"
+              name="kedbReferenceOthers"
+              placeholder="Please specify..."
+              style="
+                width: 100%;
+                padding: 12px 14px;
+                border: 1px solid #e0e4e7;
+                border-radius: 4px;
+                background-color: white;
+                font-size: 15px;
+                color: #34495e;
+                outline: none;
+                transition: all 0.3s ease;
+                box-sizing: border-box;
+              "
+            />
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-bottom: 30px;
+            border: 1px solid #e0e4e7;
+            border-radius: 6px;
+            padding: 18px;
+            background-color: #f8fafb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <label
+            for="comments"
+            style="
+              display: block;
+              margin-bottom: 10px;
+              color: #6c7a89;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+            "
+          >
+            Comments
+          </label>
+          <textarea
+            id="comments"
+            name="comments"
+            placeholder="Optional comments..."
+            maxlength="500"
+            style="
+              width: 100%;
+              padding: 12px 14px;
+              border: 1px solid #e0e4e7;
+              border-radius: 4px;
+              background-color: white;
+              font-size: 15px;
+              color: #34495e;
+              outline: none;
+              transition: all 0.3s ease;
+              min-height: 80px;
+              resize: vertical;
+              box-sizing: border-box;
+            "
+          ></textarea>
+        </div>
+
         <div style="text-align: right">
           <button
             type="submit"
-            onclick="showModal(); return false;"
             style="
               background: linear-gradient(135deg, #e74c3c, #c0392b);
               color: white;
@@ -476,6 +847,8 @@
               display: inline-flex;
               align-items: center;
             "
+            onmouseover="this.style.boxShadow='0 6px 16px rgba(231, 76, 60, 0.35)'"
+            onmouseout="this.style.boxShadow='0 4px 12px rgba(231, 76, 60, 0.25)'"
           >
             <span style="margin-right: 10px">Submit Exception</span>
             <span
@@ -494,61 +867,221 @@
       </form>
     </div>
 
-    <style>
-      @keyframes modalSlideIn {
-        from {
-          opacity: 0;
-          transform: translateY(-20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* Focus states using CSS */
-      input:focus, select:focus, textarea:focus {
-        border-color: #3498db !important;
-        box-shadow: 0 0 5px rgba(52, 152, 219, 0.3) !important;
-      }
-
-      /* Hover effects using CSS */
-      button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(231, 76, 60, 0.35) !important;
-      }
-
-      @media (max-width: 768px) {
-        body {
-          padding: 10px;
-        }
-        
-        .container {
-          padding: 20px;
-        }
-        
-        h1 {
-          font-size: 24px;
-        }
-      }
-    </style>
-
     <script>
+      const codeNameOptions = [
+        "AS2MDMIntegration",
+        "AS2MDMUpdates",
+        "ASMDMIntegration",
+      ];
+
+      const form = document.getElementById("exceptionForm");
+      const codeNameInput = document.getElementById("codeNameInput");
+      const codeNameList = document.getElementById("codeNameList");
+      const datetimeField = document.getElementById("datetime");
+      const applicationField = document.getElementById("application");
+      const shortDescriptionField = document.getElementById("shortDescription");
+
+      // Set current datetime on load
+      document.addEventListener("DOMContentLoaded", () => {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        datetimeField.value = now.toISOString().slice(0, 16);
+      });
+
+      // Form field validation
+      function validateField(input, errorId) {
+        const error = document.getElementById(errorId);
+        if (!input.value.trim()) {
+          input.classList.add("input-error");
+          error.style.display = "block";
+          return false;
+        } else {
+          input.classList.remove("input-error");
+          error.style.display = "none";
+          return true;
+        }
+      }
+
+      function validateForm() {
+        const validApp = validateField(applicationField, "applicationError");
+        const validCode = validateField(codeNameInput, "codeNameError");
+        const validDate = validateField(datetimeField, "datetimeError");
+        const validDesc = validateField(
+          shortDescriptionField,
+          "shortDescriptionError"
+        );
+        return validApp && validCode && validDate && validDesc;
+      }
+
+      // Modal handlers
       function showModal() {
-        document.getElementById('successModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        document.getElementById("successModal").style.display = "flex";
+        document.body.style.overflow = "hidden";
       }
 
       function closeModal() {
-        document.getElementById('successModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        document.getElementById('exceptionForm').reset();
+        document.getElementById("successModal").style.display = "none";
+        document.body.style.overflow = "auto";
+        form.reset();
+        document
+          .querySelectorAll(".input-error")
+          .forEach((el) => el.classList.remove("input-error"));
+        document
+          .querySelectorAll(".error-message")
+          .forEach((el) => (el.style.display = "none"));
+        document.getElementById("othersTextbox").style.display = "none";
+
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        datetimeField.value = now.toISOString().slice(0, 16);
       }
 
-      // Close modal when clicking outside
-      document.getElementById('successModal').onclick = function(e) {
+      document.getElementById("successModal").onclick = function (e) {
         if (e.target === this) closeModal();
+      };
+
+      function populateCodeNameList(options) {
+        codeNameList.innerHTML = "";
+        options.forEach((option) => {
+          const div = document.createElement("div");
+          div.className = "combobox-item";
+          div.textContent = option;
+          div.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            codeNameInput.value = option;
+            codeNameList.style.display = "none";
+            validateField(codeNameInput, "codeNameError");
+          });
+          codeNameList.appendChild(div);
+        });
+        codeNameList.style.display = options.length ? "block" : "none";
       }
+
+      codeNameInput.addEventListener("focus", () => {
+        const filter = codeNameInput.value.toLowerCase();
+        const filtered = codeNameOptions.filter((option) =>
+          option.toLowerCase().includes(filter)
+        );
+        populateCodeNameList(filtered);
+      });
+
+      codeNameInput.addEventListener("keyup", () => {
+        const filter = codeNameInput.value.toLowerCase();
+        const filtered = codeNameOptions.filter((option) =>
+          option.toLowerCase().includes(filter)
+        );
+        populateCodeNameList(filtered);
+      });
+
+      codeNameInput.addEventListener("blur", () => {
+        setTimeout(() => {
+          codeNameList.style.display = "none";
+          validateField(codeNameInput, "codeNameError");
+        }, 150);
+      });
+
+      // Others field toggle
+      function toggleOthersTextbox(selectElement) {
+        const othersTextbox = document.getElementById("othersTextbox");
+        const othersInput = document.getElementById("kedbReferenceOthers");
+        if (selectElement.value === "others") {
+          othersTextbox.style.display = "block";
+          othersInput.required = true;
+        } else {
+          othersTextbox.style.display = "none";
+          othersInput.required = false;
+          othersInput.value = "";
+        }
+      }
+
+      // Function to get form data as an object
+      function getFormData() {
+        const formData = {
+          application: applicationField.value || "",
+          codeName: codeNameInput.value || "",
+          datetime: datetimeField.value || "",
+          shortDescription: shortDescriptionField.value || "",
+          description: document.getElementById("description")?.value || "",
+          assigned: document.getElementById("assigned")?.value || "",
+          count: document.getElementById("count")?.value || "",
+          kedb: document.getElementById("kedb")?.value || "",
+          kedbReference: document.getElementById("kedbReference")?.value || "",
+          kedbReferenceOthers:
+            document.getElementById("kedbReferenceOthers")?.value || "",
+          comments: document.getElementById("comments")?.value || "",
+        };
+
+        console.log("Captured form data:", formData);
+        return formData;
+      }
+
+      // Function to handle form submission with callback
+      function handleFormSubmission(callback) {
+        if (!validateForm()) {
+          console.log("Validation failed");
+          return false;
+        }
+
+        const formData = getFormData();
+
+        // Call the provided callback function with form data
+        if (typeof callback === "function") {
+          callback(formData);
+        }
+
+        // Show success modal
+        showModal();
+        return true;
+      }
+
+      // Function to process form data (you can customize this)
+      function processFormData(data) {
+        console.log("Processing Form Data:", data);
+
+        // Store data globally for easy access
+        window.lastFormSubmission = data;
+
+        // Example: You can send data to parent window, store in variables, etc.
+        // window.parent.postMessage(data, '*'); // For iframe communication
+
+        // Or call any custom function you define
+        if (typeof window.onFormSubmit === "function") {
+          window.onFormSubmit(data);
+        }
+
+        // Alert with data (for testing - remove in production)
+        alert("Form submitted with data: " + JSON.stringify(data, null, 2));
+      }
+
+      // Expose functions globally
+      window.toggleOthersTextbox = toggleOthersTextbox;
+      window.closeModal = closeModal;
+      window.getFormData = getFormData;
+      window.handleFormSubmission = handleFormSubmission;
+      window.processFormData = processFormData;
+
+      // Submit form handler
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        console.log("Form submitted!");
+
+        // Validate form first
+        if (!validateForm()) {
+          console.log("Validation failed");
+          return;
+        }
+
+        // Get the form data
+        const formData = getFormData();
+        console.log("Form data retrieved:", formData);
+
+        // Process the form data
+        processFormData(formData);
+
+        // Show success modal
+        showModal();
+      });
     </script>
   </body>
 </html>
