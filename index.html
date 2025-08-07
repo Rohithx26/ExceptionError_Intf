@@ -377,13 +377,6 @@
           <div class="error-message" id="kedbReferenceError">
             This field is required.
           </div>
-          <div id="notreffTextbox" style="display: none; margin-top: 10px">
-            <input
-              type="text"
-              id="kedbReferencenotReff"
-              name="kedbReferencenotReff"
-              placeholder="Please specify..."
-            />
           <div id="othersTextbox" style="display: none; margin-top: 10px">
             <input
               type="text"
@@ -1034,22 +1027,6 @@
         }, 150);
       });
       
-      //Not Reffered toggle
-      document
-        .getElementById("kedbReference")
-        .addEventListener("change", function () {
-          const notreffTextbox = document.getElementById("notreffTextbox");
-          const notreffInput = document.getElementById("kedbReferencenotReff");
-          if (this.value === "Not Referred") {
-            notreffTextbox.style.display = "block";
-            notreffInput.required = true;
-          } else {
-            notreffTextbox.style.display = "none";
-            notreffInput.required = false;
-            notreffInput.value = "";
-          }
-        });
-
       // Others field toggle
       document
         .getElementById("kedbReference")
