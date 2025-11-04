@@ -165,7 +165,6 @@
         >
         Exception Interface
       </h1>
-      <!-- Form: set action to #success for pure CSS success message -->
       <form
         id="exceptionForm"
         action="http://127.0.0.1:5500/Success.html"
@@ -342,22 +341,6 @@
             This field is required.
           </div>
         </div>
-        <!-- KEDB
-        <div style="margin-bottom: 25px">
-          <label for="kedb"
-            ><span style="color: #e74c3c; font-weight: bold">*</span>
-            KEDB</label
-          >
-          <select id="kedb" name="kedb">
-            <option value="">KEDB</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-            <option value="no-need">No need</option>
-          </select>
-          <div class="error-message" id="kedbError">
-            This field is required.
-          </div>
-        </div> -->
         <!-- KEDB Reference -->
         <div style="margin-bottom: 25px">
           <label for="kedbReference"
@@ -377,18 +360,6 @@
           <div class="error-message" id="kedbReferenceError">
             This field is required.
           </div>
-          <!-- <div id="othersTextbox" style="display: none; margin-top: 10px">
-            <input
-              type="text"
-              id="kedbReferenceOthers"
-              name="kedbReferenceOthers"
-              placeholder="Please specify..."
-            />
-            <div class="error-message" id="kedbReferenceOthersError">
-              This field is required.
-            </div>
-          </div>
-        </div> -->
         <!-- Comments -->
         <div style="margin-bottom: 30px">
           <label for="comments">Comments</label>
@@ -985,6 +956,7 @@
         "TerritorySalesForce",
         "TerritorySalesForce-1",
         "TerritorySalesForce-2",
+        "RSCUAT"
       ];
       const codeNameInput = document.getElementById("codeNameInput");
       const codeNameList = document.getElementById("codeNameList");
@@ -1098,10 +1070,6 @@
           countInput.classList.remove("input-error");
           countError.style.display = "none";
         }
-        // const validKedb = validateField(
-        //   document.getElementById("kedb"),
-        //   "kedbError"
-        // );
         const validKedbRef = validateField(
           document.getElementById("kedbReference"),
           "kedbReferenceError"
@@ -1135,7 +1103,6 @@
           if (!validateForm()) {
             event.preventDefault();
           }
-          // else: allow normal form submission to backend
         });
     </script>
   </body>
