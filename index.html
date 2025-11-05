@@ -956,7 +956,6 @@
         "TerritorySalesForce",
         "TerritorySalesForce-1",
         "TerritorySalesForce-2",
-        "RSCUAT"
       ];
       const codeNameInput = document.getElementById("codeNameInput");
       const codeNameList = document.getElementById("codeNameList");
@@ -1074,7 +1073,6 @@
           document.getElementById("kedbReference"),
           "kedbReferenceError"
         );
-        // If "others" is selected, validate the others textbox
         let validKedbRefOthers = true;
         if (document.getElementById("kedbReference").value === "Others") {
           validKedbRefOthers = validateField(
@@ -1096,10 +1094,7 @@
           validKedbRefOthers
         );
       }
-      // On submit, validate, let form submit if valid
-      document
-        .getElementById("exceptionForm")
-        .addEventListener("submit", function (event) {
+      document.getElementById("exceptionForm").addEventListener("submit", function (event) {
           if (!validateForm()) {
             event.preventDefault();
           }
