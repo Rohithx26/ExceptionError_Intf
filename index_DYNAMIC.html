@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exception Interface</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(120deg, #e9ecef 0%, #f5f6fa 100%);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px 0 rgba(44, 62, 80, 0.1), 0 1.5px 4px #bfc9d1;
+        width: 95%;
+        max-width: 600px;
+        padding: 40px 30px 32px 30px;
+        position: relative;
+        overflow: hidden;
+        border: 1.5px solid #e3e6ea;
+        animation: fadeInUp 0.7s cubic-bezier(0.23, 1.01, 0.32, 1) both;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .container h1 {
+        color: #2c3e50;
+        font-weight: 400;
+        margin-top: 0;
+        margin-bottom: 25px;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.5px;
+        text-shadow: 0 1px 0 #f5f6fa;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #6c7a89;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid #e0e4e7;
+        border-radius: 6px;
+        background: #f7f8fa;
+        font-size: 15px;
+        color: #34495e;
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        box-sizing: border-box;
+        margin-bottom: 5px;
+        box-shadow: 0 1px 2px #e9ecef inset;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: #b2becd !important;
+        box-shadow: 0 0 0 2px #e74c3c22 !important;
+        background: #f3f4f7;
+      }
+
+      .input-error {
+        border-color: #e74c3c !important;
+        background: #fff0f0;
+      }
+
+      .error-message {
+        color: #c0392b;
+        font-size: 12px;
+        margin-top: 2px;
+        display: none;
+      }
+
+      .combobox-list {
+        display: none;
+        position: absolute;
+        border: 1.5px solid #e0e4e7;
+        border-top: none;
+        max-height: 200px;
+        overflow-y: auto;
+        width: 100%;
+        background-color: #fff;
+        z-index: 100;
+        box-shadow: 0 4px 12px rgba(44, 62, 80, 0.08);
+        box-sizing: border-box;
+        border-radius: 0 0 6px 6px;
+      }
+
+      .combobox-item {
+        padding: 10px 18px;
+        cursor: pointer;
+        font-size: 15px;
+        color: #34495e;
+        transition: background 0.15s;
+      }
+
+      .combobox-item:hover {
+        background-color: #f0f0f0;
+      }
+
+      .combobox-wrapper {
+        position: relative;
+      }
+
+      button[type="submit"] {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.18);
+        letter-spacing: 0.5px;
+        transition: background 0.2s, box-shadow 0.2s;
+      }
+
+      button[type="submit"]:hover {
+        background: linear-gradient(135deg, #c0392b, #e74c3c);
+        box-shadow: 0 6px 18px rgba(231, 76, 60, 0.22);
+      }
+
+      #formErrorBanner {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      #formErrorBanner.show {
+        opacity: 1;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px 5px;
+        }
+        h1 {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>
+        <span
+          style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; width: 42px; height: 42px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 20px; box-shadow: 0 3px 6px rgba(231, 76, 60, 0.18);"
+          >!</span
+        >
+        Exception Interface
+      </h1>
+
+      <form id="exceptionForm" action="http://localhost:8035/Success.html" novalidate>
+        <div id="formErrorBanner"></div>
+
+        <div style="margin-bottom: 25px">
+          <label for="application">
+            <span style="color: #e74c3c; font-weight: bold">*</span> Application
+          </label>
+          <!-- Dynamic XML content -->
+          $ApplicationNames/ApplicationNames/Content
+          <div class="error-message" id="applicationError">This field is required.</div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label for="codeNameInput">
+            <span style="color: #e74c3c; font-weight: bold">*</span> Code Name
+          </label>
+          <div class="combobox-wrapper">
+            <input
+              type="text"
+              id="codeNameInput"
+              name="codeName"
+              placeholder="Search or select an interface..."
+              autocomplete="off"
+            />
+            <div id="codeNameList" class="combobox-list"></div>
+          </div>
+          <div class="error-message" id="codeNameError">This field is required.</div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label for="datetime">
+            <span style="color: #e74c3c; font-weight: bold">*</span> Date & Time
+          </label>
+          <input type="datetime-local" id="datetime" name="datetime" style="max-width: 300px" />
+          <div class="error-message" id="datetimeError">This field is required.</div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label for="description">
+            <span style="color: #e74c3c; font-weight: bold">*</span> Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Detailed description of the exception..."
+            maxlength="5000"
+            style="min-height: 100px; resize: vertical"
+          ></textarea>
+          <div class="error-message" id="descriptionError">This field is required.</div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label for="closeNotes">
+            <span style="color: #e74c3c; font-weight: bold">*</span> Close Notes
+          </label>
+          <input
+            type="text"
+            id="closeNotes"
+            name="closeNotes"
+            placeholder="Briefly describe the closing notes..."
+            maxlength="275"
+          />
+          <div class="error-message" id="closeNotesError">This field is required.</div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label for="assigned">
+            <span style="color: #e74c3c; font-weight: bold">*</span> Assigned
+          </label>
+          <!-- Dynamic XML content -->
+          $Personnels/Personnels/Content
+          <div class="error-message" id="assignedError">This field is required.</div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label for="count">
+            <span style="color: #e74c3c; font-weight: bold">*</span> Count
+          </label>
+          <input
+            type="number"
+            id="count"
+            name="count"
+            placeholder="Enter count"
+            min="0"
+            style="max-width: 200px"
+          />
+          <div class="error-message" id="countError">This field is required.</div>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <label for="kedbReference">
+            <span style="color: #e74c3c; font-weight: bold">*</span> KEDB Reference
+          </label>
+          <!-- Dynamic XML content -->
+          $KEDBReferrence/KEDBReferrence/Content
+          <div class="error-message" id="kedbReferenceError">This field is required.</div>
+        </div>
+
+        <div style="margin-bottom: 30px">
+          <label for="comments">Comments</label>
+          <textarea
+            id="comments"
+            name="comments"
+            placeholder="Optional comments..."
+            maxlength="500"
+            style="min-height: 80px; resize: vertical"
+          ></textarea>
+        </div>
+
+        <div style="text-align: right">
+          <button type="submit">Submit Exception</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      $CodeNames/CodeNames/Content
+
+      const codeNameInput = document.getElementById("codeNameInput");
+      const codeNameList = document.getElementById("codeNameList");
+
+      function populateCodeNameList(options) {
+        codeNameList.innerHTML = "";
+        options.forEach((option) => {
+          const div = document.createElement("div");
+          div.className = "combobox-item";
+          div.textContent = option;
+          div.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            codeNameInput.value = option;
+            codeNameList.style.display = "none";
+          });
+          codeNameList.appendChild(div);
+        });
+        codeNameList.style.display = options.length ? "block" : "none";
+      }
+
+      codeNameInput.addEventListener("focus", () => {
+        const filter = codeNameInput.value.toLowerCase();
+        const filtered = codeNameOptions.filter((option) =>
+          option.toLowerCase().includes(filter)
+        );
+        populateCodeNameList(filtered);
+      });
+
+      codeNameInput.addEventListener("keyup", () => {
+        const filter = codeNameInput.value.toLowerCase();
+        const filtered = codeNameOptions.filter((option) =>
+          option.toLowerCase().includes(filter)
+        );
+        populateCodeNameList(filtered);
+      });
+
+      codeNameInput.addEventListener("blur", () => {
+        setTimeout(() => {
+          codeNameList.style.display = "none";
+        }, 150);
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById("datetime").value = now.toISOString().slice(0, 16);
+      });
+
+      function validateField(input, errorId) {
+        const error = document.getElementById(errorId);
+        if (!input.value.trim()) {
+          input.classList.add("input-error");
+          error.style.display = "block";
+          return false;
+        }
+        input.classList.remove("input-error");
+        error.style.display = "none";
+        return true;
+      }
+
+      function validateForm() {
+        const validApp = validateField(document.getElementById("application"), "applicationError");
+        const validCode = validateField(codeNameInput, "codeNameError");
+        const validDate = validateField(document.getElementById("datetime"), "datetimeError");
+        const validShortDesc = validateField(document.getElementById("closeNotes"), "closeNotesError");
+        const validDesc = validateField(document.getElementById("description"), "descriptionError");
+        const validAssigned = validateField(document.getElementById("assigned"), "assignedError");
+
+        const countInput = document.getElementById("count");
+        const validCount = countInput.value.trim() !== "" && Number(countInput.value) >= 0;
+        const countError = document.getElementById("countError");
+        if (!validCount) {
+          countInput.classList.add("input-error");
+          countError.style.display = "block";
+        } else {
+          countInput.classList.remove("input-error");
+          countError.style.display = "none";
+        }
+
+        const validKedbRef = validateField(
+          document.getElementById("kedbReference"),
+          "kedbReferenceError"
+        );
+
+        return (
+          validApp &&
+          validCode &&
+          validDate &&
+          validShortDesc &&
+          validDesc &&
+          validAssigned &&
+          validCount &&
+          validKedbRef
+        );
+      }
+
+      const formErrorBanner = document.getElementById("formErrorBanner");
+
+      function showFormError(message) {
+        formErrorBanner.textContent = message;
+        formErrorBanner.classList.add("show");
+        formErrorBanner.style.display = "block";
+        setTimeout(() => {
+          formErrorBanner.classList.remove("show");
+          formErrorBanner.style.display = "none";
+        }, 4000);
+      }
+
+      document.getElementById("exceptionForm").addEventListener("submit", function (event) {
+        const form = document.getElementById("exceptionForm");
+        const inputs = form.querySelectorAll("input, select, textarea");
+        const allEmpty = Array.from(inputs).every((input) => !input.value.trim());
+
+        if (allEmpty) {
+          showFormError("⚠️ Please fill in at least one field before submitting the form.");
+          event.preventDefault();
+          return;
+        }
+
+        if (!validateForm()) {
+          showFormError("⚠️ Please fill all required fields before submitting.");
+          event.preventDefault();
+        }
+      });
+    </script>
+  </body>
+</html>
